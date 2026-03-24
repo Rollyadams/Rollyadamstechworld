@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rollyadams Techworld</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --teal: #2ec4c4;
+    --teal-dark: #1fa8a8;
+    --dark: #222;
+    --light: #f7f7f7;
+    --white: #fff;
+    --text: #333;
+    --subtext: #666;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Nunito', sans-serif; color: var(--text); background: var(--white); }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 100; background: var(--white);
+    border-bottom: 1px solid #e8e8e8; display: flex; align-items: center;
+    justify-content: space-between; padding: 0 20px; height: 58px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.07);
+  }
+  .nav-brand { font-weight: 700; font-size: 1.1rem; color: var(--dark); }
+  .nav-icons { display: flex; gap: 18px; }
+  .nav-icons a { color: var(--dark); text-decoration: none; font-size: 1.2rem; transition: color .2s; }
+  .nav-icons a:hover { color: var(--teal); }
+  .hamburger { cursor: pointer; display: flex; flex-direction: column; gap: 5px; }
+  .hamburger span { display: block; width: 22px; height: 2px; background: var(--dark); border-radius: 2px; }
+  .mobile-menu {
+    display: none; flex-direction: column; background: var(--white);
+    border-bottom: 1px solid #eee; position: absolute; top: 58px; left: 0; right: 0;
+    box-shadow: 0 4px 12px rgba(0,0,0,.1); z-index: 99;
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a {
+    padding: 13px 24px; text-decoration: none; color: var(--dark);
+    font-weight: 600; border-bottom: 1px solid #f0f0f0;
+  }
+  .mobile-menu a:hover { background: #f5fefe; color: var(--teal); }
+
+  /* PAGE SYSTEM */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* HERO */
+  #hero { position: relative; width: 100%; height: 420px; overflow: hidden; background: #1a2a3a; }
+  #hero img { width: 100%; height: 100%; object-fit: cover; opacity: .72; }
+  .hero-text { position: absolute; bottom: 40px; left: 24px; right: 24px; color: var(--white); }
+  .hero-text h1 {
+    font-family: 'Bebas Neue', sans-serif; font-size: 2.6rem;
+    letter-spacing: 1px; text-shadow: 0 2px 8px rgba(0,0,0,.5); line-height: 1.1;
+  }
+  .hero-text p { font-size: .95rem; font-weight: 700; margin-top: 8px; text-shadow: 0 1px 4px rgba(0,0,0,.5); }
+
+  /* SECTIONS */
+  section { padding: 52px 24px; }
+  .section-title {
+    text-align: center; font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem; letter-spacing: 2px; color: var(--dark);
+  }
+  .teal-line { width: 60px; height: 3px; background: var(--teal); margin: 10px auto 28px; border-radius: 2px; }
+
+  /* WHO WE ARE */
+  #who { background: var(--white); text-align: center; }
+  #who p { font-size: .95rem; line-height: 1.9; max-width: 500px; margin: 0 auto 16px; }
+  .who-gallery { display: flex; flex-direction: column; gap: 14px; margin-top: 28px; }
+  .who-gallery img { width: 100%; max-width: 520px; margin: 0 auto; border-radius: 10px; display: block; object-fit: cover; box-shadow: 0 4px 16px rgba(0,0,0,.1); }
+
+  /* WHAT WE DO */
+  #what { background: var(--light); text-align: center; }
+  .services-grid { display: flex; flex-direction: column; gap: 20px; }
+  .service-card { background: var(--white); border-radius: 14px; padding: 32px 24px 28px; box-shadow: 0 2px 12px rgba(0,0,0,.07); }
+  .service-icon { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin: 0 auto 16px; display: block; box-shadow: 0 4px 12px rgba(0,0,0,.12); }
+  .service-card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 10px; color: var(--dark); }
+  .service-card p { font-size: .9rem; color: var(--subtext); margin-bottom: 22px; line-height: 1.7; }
+
+  /* BUTTONS */
+  .btn-teal {
+    display: inline-block; background: var(--teal); color: var(--white);
+    font-family: 'Nunito', sans-serif; font-weight: 700; font-size: .85rem;
+    letter-spacing: 1.5px; text-transform: uppercase; padding: 14px 36px;
+    border: none; cursor: pointer; text-decoration: none; transition: background .2s, transform .15s;
+  }
+  .btn-teal:hover { background: var(--teal-dark); transform: translateY(-1px); }
+  .btn-full { width: 100%; padding: 16px; font-size: .95rem; }
+  .btn-back {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: none; border: 2px solid var(--teal); color: var(--teal);
+    font-family: 'Nunito', sans-serif; font-weight: 700; font-size: .82rem;
+    letter-spacing: 1px; text-transform: uppercase; padding: 10px 22px;
+    cursor: pointer; margin-bottom: 28px; transition: all .2s;
+  }
+  .btn-back:hover { background: var(--teal); color: var(--white); }
+
+  /* GALLERY */
+  #gallery { background: var(--white); }
+  .gallery-grid { display: flex; flex-direction: column; gap: 14px; }
+  .gallery-grid img { width: 100%; border-radius: 10px; display: block; object-fit: cover; box-shadow: 0 3px 12px rgba(0,0,0,.1); transition: transform .3s; }
+  .gallery-grid img:hover { transform: scale(1.015); }
+
+  /* MAP */
+  .map-wrap { width: 100%; height: 300px; }
+  .map-wrap iframe { width: 100%; height: 100%; border: none; display: block; }
+
+  /* CONTACT */
+  #contact { background: var(--light); text-align: center; padding: 48px 24px; }
+  .contact-info { margin-bottom: 28px; display: flex; flex-direction: column; gap: 10px; align-items: center; }
+  .contact-location { font-size: 1rem; color: var(--dark); font-weight: 600; }
+  .contact-detail { font-size: .93rem; color: var(--text); text-decoration: none; }
+  .teal-link { color: var(--teal) !important; font-weight: 600; }
+  .teal-link:hover { text-decoration: underline; }
+  .contact-form { display: flex; flex-direction: column; gap: 14px; max-width: 520px; margin: 0 auto; }
+  .form-field {
+    width: 100%; padding: 16px 18px; border: 1.5px solid #ddd; border-radius: 8px;
+    font-family: 'Nunito', sans-serif; font-size: .95rem; color: var(--text);
+    background: var(--white); outline: none; transition: border-color .2s;
+  }
+  .form-field:focus { border-color: var(--teal); }
+  .form-field::placeholder { color: #aaa; }
+  .form-textarea { min-height: 130px; resize: vertical; }
+
+  /* FOOTER */
+  footer { background: #111; color: #888; text-align: center; padding: 24px 20px; font-size: .78rem; }
+  .footer-nav { display: flex; justify-content: center; gap: 24px; margin-bottom: 14px; }
+  .footer-nav a { color: #aaa; text-decoration: none; font-size: .82rem; font-weight: 600; letter-spacing: .5px; text-transform: uppercase; cursor: pointer; }
+  .footer-nav a:hover { color: var(--teal); }
+  .footer-brand { color: #fff; font-weight: 700; font-size: .95rem; margin-bottom: 6px; }
+
+  /* SERVICE DETAIL PAGES */
+  .detail-body { padding: 32px 24px 48px; max-width: 680px; margin: 0 auto; }
+  .detail-body .section-title { font-size: 1.65rem; line-height: 1.2; margin-bottom: 4px; }
+  .detail-hero { width: 100%; border-radius: 10px; display: block; object-fit: cover; max-height: 260px; margin-bottom: 24px; box-shadow: 0 4px 16px rgba(0,0,0,.12); }
+  .detail-body p { font-size: .93rem; line-height: 1.9; color: var(--text); margin-bottom: 16px; }
+  .product-list { list-style: none; margin: 8px 0 20px; }
+  .product-list li { font-size: .95rem; font-weight: 700; color: var(--dark); padding: 10px 0; border-bottom: 1px solid #f0f0f0; }
+  .product-list li:last-child { border-bottom: none; }
+  .detail-imgs { display: flex; flex-direction: column; gap: 14px; margin: 20px 0; }
+  .detail-imgs img { width: 100%; border-radius: 10px; object-fit: cover; display: block; box-shadow: 0 3px 12px rgba(0,0,0,.1); }
+  .cta-note { text-align: center; font-size: .92rem; color: var(--subtext); margin-top: 24px; line-height: 1.9; }
+  .cta-note a { color: var(--teal); font-weight: 700; text-decoration: none; }
+  .cta-note a:hover { text-decoration: underline; }
+  .retro-img { display: block; margin: 0 auto 24px; width: 150px; }
+
+  /* DESKTOP */
+  @media(min-width: 700px) {
+    #hero { height: 500px; }
+    .hero-text h1 { font-size: 3.4rem; }
+    .who-gallery { flex-direction: row; flex-wrap: wrap; justify-content: center; }
+    .who-gallery img { width: calc(50% - 8px); max-width: 260px; }
+    .services-grid { display: grid; grid-template-columns: repeat(2, 1fr); }
+    .gallery-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .detail-imgs { display: grid; grid-template-columns: repeat(2, 1fr); }
+    .map-wrap { height: 380px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+  <div class="nav-brand">Rollyadams Techworld</div>
+  <div class="nav-icons">
+    <a href="tel:09063077466">📞</a>
+    <a href="mailto:rollyadamstechworld@gmail.com">✉️</a>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#" onclick="showPage('home')">Home</a>
+  <a href="#" onclick="goSection('who')">Who We Are</a>
+  <a href="#" onclick="goSection('what')">What We Do</a>
+  <a href="#" onclick="goSection('gallery')">Gallery</a>
+  <a href="#" onclick="goSection('contact')">Contact</a>
+</div>
+
+
+<!-- ═══════════════ HOME PAGE ═══════════════ -->
+<div class="page active" id="page-home">
+
+  <div id="hero">
+    <img src="https://images.unsplash.com/photo-1509391366360-2e959784a276?w=900&q=80" alt="Solar panels">
+    <div class="hero-text">
+      <h1>Rollyadams Techworld</h1>
+      <p>Bringing great tech-ideas to your door-step</p>
+    </div>
+  </div>
+
+  <section id="who">
+    <h2 class="section-title">WHO WE ARE</h2>
+    <div class="teal-line"></div>
+    <p>Hey! we have interesting news for you. Our motive is to bring the latest technologies from round the world to your door steps. And...<br>
+      * They will be affordable...<br>
+      * Easy to use...<br>
+      * Long lasting... and most importantly<br>
+      * They are essential to our daily needs
+    </p>
+    <p>At Rollyadams techworld, tech-ideas comes so close to you irrespective of what you do or who you are.</p>
+    <div class="who-gallery">
+      <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80" alt="Security cameras">
+      <img src="https://images.unsplash.com/photo-1497440001374-f26997328c1b?w=600&q=80" alt="Solar installation">
+      <img src="https://images.unsplash.com/photo-1491933382434-500287f9b54b?w=600&q=80" alt="Electronics">
+    </div>
+  </section>
+
+  <section id="what">
+    <h2 class="section-title">WHAT WE DO</h2>
+    <div class="teal-line"></div>
+    <div class="services-grid">
+      <div class="service-card">
+        <img class="service-icon" src="https://images.unsplash.com/photo-1566093097221-ac2335b09e70?w=200&q=80" alt="Solar">
+        <h3>Solar/Inverter Grid Systems</h3>
+        <p>We sell, install and distributes renewable energy gadgets.</p>
+        <button class="btn-teal" onclick="showPage('solar')">LEARN MORE</button>
+      </div>
+      <div class="service-card">
+        <img class="service-icon" src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=200&q=80" alt="CCTV">
+        <h3>Security Surveillance Systems</h3>
+        <p>We install CCTV cameras, IP-cameras, Security Doorbells, Covert Cameras and more...</p>
+        <button class="btn-teal" onclick="showPage('security')">LEARN MORE</button>
+      </div>
+      <div class="service-card">
+        <img class="service-icon" src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=200&q=80" alt="IT">
+        <h3>IT Solutions</h3>
+        <p>IT solutions that improve productivity and grow enterprise IT infrastructure</p>
+        <button class="btn-teal" onclick="showPage('it')">LEARN MORE</button>
+      </div>
+      <div class="service-card">
+        <img class="service-icon" src="https://images.unsplash.com/photo-1516387938699-a93567ec168e?w=200&q=80" alt="Call">
+        <h3>"Just a call Services"</h3>
+        <p>Put a call through to us, and we'll help you with any electronics challenge via phone or direct contact.<br>
+          * Support Services &nbsp;* Tablet Support Services<br>
+          * Smartphone Support Services<br>
+          * Consumer Electronics Support Services
+        </p>
+        <button class="btn-teal" onclick="showPage('call')">LEARN MORE</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="gallery">
+    <h2 class="section-title">OUR WORKS</h2>
+    <div class="teal-line"></div>
+    <div class="gallery-grid">
+      <img src="https://images.unsplash.com/photo-1566093097221-ac2335b09e70?w=600&q=80" alt="Solar on house">
+      <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80" alt="CCTV cameras">
+      <img src="https://images.unsplash.com/photo-1497440001374-f26997328c1b?w=600&q=80" alt="Solar workers">
+      <img src="https://images.unsplash.com/photo-1509391366360-2e959784a276?w=600&q=80" alt="Solar battery">
+      <img src="https://images.unsplash.com/photo-1620714223084-8fcacc2107b2?w=600&q=80" alt="Inverter">
+      <img src="https://images.unsplash.com/photo-1491933382434-500287f9b54b?w=600&q=80" alt="Electronics">
+    </div>
+  </section>
+
+  <div class="map-wrap">
+    <iframe src="https://maps.google.com/maps?q=Ikeja+Lagos+Nigeria&t=&z=14&ie=UTF8&iwloc=&output=embed"
+      allowfullscreen loading="lazy" title="Lagos Nigeria Map"></iframe>
+  </div>
+
+  <section id="contact">
+    <h2 class="section-title">CONTACT</h2>
+    <div class="teal-line"></div>
+    <div class="contact-info">
+      <p class="contact-location">Lagos, Nigeria</p>
+      <a href="tel:09063077466" class="contact-detail teal-link">📞 09063077466 - Rollyadams Techworld</a>
+      <a href="mailto:rollyadamstechworld@gmail.com" class="contact-detail teal-link">✉️ rollyadamstechworld@gmail.com</a>
+      <p class="contact-detail">🕐 8:30am to 5:00pm</p>
+    </div>
+    <div class="contact-form">
+      <input type="text" placeholder="Name" class="form-field" id="c-name">
+      <input type="tel" placeholder="Phone" class="form-field" id="c-phone">
+      <input type="email" placeholder="Email address" class="form-field" id="c-email">
+      <textarea placeholder="Message" class="form-field form-textarea" id="c-msg"></textarea>
+      <button class="btn-teal btn-full" onclick="sendMessage()">CONTACT US</button>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-nav">
+      <a onclick="showPage('home')">Home</a>
+      <a onclick="goSection('who')">Who We Are</a>
+      <a onclick="goSection('what')">More ▲</a>
+    </div>
+    <p class="footer-brand">Rollyadams Techworld</p>
+    <p>Copyright &copy; 2026 All rights reserved</p>
+  </footer>
+</div>
+
+
+<!-- ═══════════════ SOLAR PAGE ═══════════════ -->
+<div class="page" id="page-solar">
+  <div class="detail-body">
+    <button class="btn-back" onclick="showPage('home')">← Back</button>
+    <h2 class="section-title">SOLAR/INVERTER<br>GRID SYSTEMS</h2>
+    <div class="teal-line"></div>
+    <img class="detail-hero" src="https://images.unsplash.com/photo-1566093097221-ac2335b09e70?w=800&q=80" alt="Solar on house">
+    <p><strong>Our products are;</strong></p>
+    <ul class="product-list">
+      <li>1. Inverters</li>
+      <li>2. Solar Panels</li>
+      <li>3. Batteries</li>
+      <li>4. Charge controller</li>
+    </ul>
+    <p><strong>All at affordable prices</strong></p>
+    <div class="detail-imgs">
+      <img src="https://images.unsplash.com/photo-1497440001374-f26997328c1b?w=600&q=80" alt="Solar installation">
+      <img src="https://images.unsplash.com/photo-1620714223084-8fcacc2107b2?w=600&q=80" alt="Inverter unit">
+      <img src="https://images.unsplash.com/photo-1509391366360-2e959784a276?w=600&q=80" alt="Solar and battery">
+      <img src="https://images.unsplash.com/photo-1605980776566-0486c3ac7617?w=600&q=80" alt="Battery bank">
+    </div>
+    <p class="cta-note">To order or enquire about our solar/inverter products,
+      <a href="tel:09063077466">call us</a> or
+      <a href="#" onclick="goSection('contact')">send us a message</a>
+      and we will get back to you straight away.
+    </p>
+  </div>
+  <footer>
+    <div class="footer-nav">
+      <a onclick="showPage('home')">Home</a>
+      <a onclick="goSection('who')">Who We Are</a>
+      <a onclick="goSection('what')">More ▲</a>
+    </div>
+    <p class="footer-brand">Rollyadams Techworld</p>
+    <p>Copyright &copy; 2026 All rights reserved</p>
+  </footer>
+</div>
+
+
+<!-- ═══════════════ SECURITY PAGE ═══════════════ -->
+<div class="page" id="page-security">
+  <div class="detail-body">
+    <button class="btn-back" onclick="showPage('home')">← Back</button>
+    <h2 class="section-title">SECURITY<br>SURVEILLANCE<br>SYSTEMS</h2>
+    <div class="teal-line"></div>
+    <img class="detail-hero" src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80" alt="Security cameras">
+    <p>In today's fast developing society, being security conscious is paramount. We help you monitor your properties in real time. Giving you detailed occurrences live wherever you are.</p>
+    <div class="detail-imgs">
+      <img src="https://images.unsplash.com/photo-1557597774-9d273605dfa9?w=600&q=80" alt="Outdoor CCTV">
+      <img src="https://images.unsplash.com/photo-1555664424-778a1e5e1b48?w=600&q=80" alt="IP camera">
+      <img src="https://images.unsplash.com/photo-1593941707882-a5bba13938c7?w=600&q=80" alt="Security doorbell">
+      <img src="https://images.unsplash.com/photo-1562408590-e32931084e23?w=600&q=80" alt="Security monitor">
+    </div>
+    <p class="cta-note">To install a security system at your home or office,
+      <a href="tel:09063077466">call us</a> or
+      <a href="#" onclick="goSection('contact')">Order a Service</a>
+      and we will call you straight back.
+    </p>
+  </div>
+  <footer>
+    <div class="footer-nav">
+      <a onclick="showPage('home')">Home</a>
+      <a onclick="goSection('who')">Who We Are</a>
+      <a onclick="goSection('what')">More ▲</a>
+    </div>
+    <p class="footer-brand">Rollyadams Techworld</p>
+    <p>Copyright &copy; 2026 All rights reserved</p>
+  </footer>
+</div>
+
+
+<!-- ═══════════════ IT SOLUTIONS PAGE ═══════════════ -->
+<div class="page" id="page-it">
+  <div class="detail-body">
+    <button class="btn-back" onclick="showPage('home')">← Back</button>
+    <h2 class="section-title">IT SOLUTIONS</h2>
+    <div class="teal-line"></div>
+    <img class="detail-hero" src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800&q=80" alt="IT Solutions">
+    <p>Our IT Solutions offers full-service IT support for all of your IT needs. Whether you're a small business that needs hosted email exchange or a large organization who is building out a new data center, Rollyadams Techworld can assist you with IT solution procurement, design, implementation, maintenance and support. These services are offered individually or in a pre-packaged form.</p>
+    <p>Our in-house experts can swiftly diagnose the issue and suggest a solution to fix your PC. We also have IT spares parts readily available in stock with us to deliver faster repair turn-around time.</p>
+    <p>Our services cater to both under-warranty and out-of-warranty products. Customers have a choice to avail our services by walking in to any of our support centers, requesting a technician to visit to your home/office or ordering a pickup and delivery.</p>
+    <p class="cta-note">To avail or know more about our services, please
+      <a href="tel:09063077466">call us</a> or get in touch via our
+      <a href="#" onclick="goSection('contact')">Order a Service</a>
+      form and we will call you straight back.
+    </p>
+  </div>
+  <footer>
+    <div class="footer-nav">
+      <a onclick="showPage('home')">Home</a>
+      <a onclick="goSection('who')">Who We Are</a>
+      <a onclick="goSection('what')">More ▲</a>
+    </div>
+    <p class="footer-brand">Rollyadams Techworld</p>
+    <p>Copyright &copy; 2026 All rights reserved</p>
+  </footer>
+</div>
+
+
+<!-- ═══════════════ JUST A CALL PAGE ═══════════════ -->
+<div class="page" id="page-call">
+  <div class="detail-body">
+    <button class="btn-back" onclick="showPage('home')">← Back</button>
+    <h2 class="section-title">"JUST A CALL<br>SERVICES"</h2>
+    <div class="teal-line"></div>
+    <!-- Retro telephone lady illustration -->
+    <svg class="retro-img" viewBox="0 0 120 140" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="60" cy="40" r="28" fill="#f0e8d8" stroke="#333" stroke-width="2"/>
+      <ellipse cx="60" cy="42" rx="16" ry="20" fill="#f5d5b0" stroke="#333" stroke-width="1.5"/>
+      <path d="M44 38 Q60 20 76 38" fill="#4a3520" stroke="#333" stroke-width="1.5"/>
+      <circle cx="53" cy="42" r="2.5" fill="#333"/>
+      <circle cx="67" cy="42" r="2.5" fill="#333"/>
+      <path d="M55 50 Q60 55 65 50" fill="none" stroke="#c0705a" stroke-width="1.5" stroke-linecap="round"/>
+      <rect x="38" y="67" width="44" height="50" rx="8" fill="#555" stroke="#333" stroke-width="1.5"/>
+      <path d="M38 80 Q20 75 22 90 Q24 105 38 100" fill="#f5d5b0" stroke="#333" stroke-width="1.5"/>
+      <rect x="28" y="72" width="18" height="28" rx="6" fill="#888" stroke="#333" stroke-width="1.5"/>
+      <path d="M30 72 Q36 60 38 67" fill="#f5d5b0" stroke="#333" stroke-width="1.5"/>
+    </svg>
+    <p>Ensure Services is authorized to provide support services for most leading PC making brands. Our PC Support Services are available for all kinds of personal computers - Desktops, Laptops and All-in-one Computers etc. Our team of vendor-certified engineers have the capability to provide efficient and economical solutions for all kinds of hardware issues faced with computers.</p>
+    <p>Our in-house experts can swiftly diagnose the issue and suggest a solution to fix your PC. We also have IT spares parts readily available in stock with us to deliver faster repair turn-around time.</p>
+    <p>Our services cater to both under-warranty and out-of-warranty products. Customers have a choice to avail our services by walking in to any of our support centers, requesting a technician to visit to your home/office or ordering a pickup and delivery.</p>
+    <p class="cta-note">To avail or know more about our services, please
+      <a href="tel:09063077466">call us</a> or get in touch via our
+      <a href="#" onclick="goSection('contact')">Order a Service</a>
+      form and we will call you straight back.
+    </p>
+  </div>
+  <footer>
+    <div class="footer-nav">
+      <a onclick="showPage('home')">Home</a>
+      <a onclick="goSection('who')">Who We Are</a>
+      <a onclick="goSection('what')">More ▲</a>
+    </div>
+    <p class="footer-brand">Rollyadams Techworld</p>
+    <p>Copyright &copy; 2026 All rights reserved</p>
+  </footer>
+</div>
+
+
+<script>
+  function showPage(name) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page-' + name).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    document.getElementById('mobileMenu').classList.remove('open');
+  }
+
+  function goSection(id) {
+    showPage('home');
+    setTimeout(() => {
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }, 120);
+  }
+
+  function toggleMenu() {
+    document.getElementById('mobileMenu').classList.toggle('open');
+  }
+
+  function sendMessage() {
+    const name = document.getElementById('c-name').value.trim();
+    const phone = document.getElementById('c-phone').value.trim();
+    const email = document.getElementById('c-email').value.trim();
+    const msg = document.getElementById('c-msg').value.trim();
+    if (!name || !msg) { alert('Please fill in your name and message.'); return; }
+    const body = `Name: ${name}%0APhone: ${phone}%0AEmail: ${email}%0A%0AMessage: ${msg}`;
+    window.location.href = `mailto:rollyadamstechworld@gmail.com?subject=Enquiry from ${encodeURIComponent(name)}&body=${body}`;
+  }
+</script>
+</body>
+</html>
